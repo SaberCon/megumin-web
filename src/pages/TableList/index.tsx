@@ -14,6 +14,7 @@ import type { TableListItem } from './data.d';
 import { queryRule, updateRule, addRule, removeRule } from './service';
 /**
  * 添加节点
+ *
  * @param fields
  */
 
@@ -33,6 +34,7 @@ const handleAdd = async (fields: TableListItem) => {
 };
 /**
  * 更新节点
+ *
  * @param fields
  */
 
@@ -55,7 +57,8 @@ const handleUpdate = async (fields: FormValueType) => {
   }
 };
 /**
- *  删除节点
+ * 删除节点
+ *
  * @param selectedRows
  */
 
@@ -78,22 +81,16 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
 };
 
 const TableList: React.FC = () => {
-  /**
-   * 新建窗口的弹窗
-   */
+  /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  /**
-   * 分布更新窗口的弹窗
-   */
+  /** 分布更新窗口的弹窗 */
 
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<TableListItem>();
   const [selectedRowsState, setSelectedRows] = useState<TableListItem[]>([]);
-  /**
-   * 国际化配置
-   */
+  /** 国际化配置 */
 
   const intl = useIntl();
   const columns: ProColumns<TableListItem>[] = [
