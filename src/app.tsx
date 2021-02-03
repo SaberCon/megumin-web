@@ -84,7 +84,7 @@ const errorHandler = (error: ResponseError) => {
       message: `请求错误 ${status}: ${url}`,
       description: errorText,
     });
-  } else if (error.data.msg) {
+  } else if (error.name === 'BizError') {
     message.error(error.data.msg)
   } else {
     notification.error({

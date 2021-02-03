@@ -1,4 +1,4 @@
-import { request } from 'umi';
+import { get, postForm } from '@/utils/request';
 
 export enum SmsType {
   LOGIN = 1,
@@ -8,25 +8,17 @@ export enum SmsType {
 }
 
 export async function sendCode(type: SmsType, phone?: string) {
-  return request('/api/sms', {
-    params: phone ? { type, phone } : { type }
-  });
+  return get('sms', { type, phone });
 }
 
 export async function checkCode(type: SmsType, code: string) {
-  return (await request<API.Result<boolean>>('/api/sms/check', {
-    params: { type, code }
-  })).data;
+  return get<boolean>('sms/check', { type, code });
 }
 
 export async function login(phone: string, code: string, type: 'pwd' | 'sms') {
-  return (await request<API.Result<string>>('/api/user/login', {
-    method: 'POST',
-    requestType: 'form',
-    data: { phone, code, type },
-  })).data;
+  return postForm<string>('user/login', { phone, code, type });
 }
 
 export async function getCurrentUserInfo() {
-  return (await request<API.Result<API.CurrentUser>>('/api/user/current')).data;
+  return get<API.CurrentUser>('user/current');
 }
