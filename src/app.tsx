@@ -6,7 +6,7 @@ import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import type { ResponseError } from 'umi-request';
+import type { RequestOptionsInit, ResponseError } from 'umi-request';
 import { queryCurrent } from './services/user';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
@@ -103,6 +103,15 @@ const errorHandler = (error: ResponseError) => {
   throw error;
 };
 
+const authHeaderInterceptor = (  url: string, options: RequestOptionsInit ) => {
+  const authHeader = {'token': localStorage.getItem('token')}
+  return {
+    url: `${url}`,
+    options: { ...options , interceptors: true, headers: authHeader},
+  };    
+}
+
 export const request: RequestConfig = {
   errorHandler,
+  requestInterceptors: [authHeaderInterceptor],
 };

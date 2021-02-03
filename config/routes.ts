@@ -17,7 +17,7 @@
   },
   {
     path: '/welcome',
-    name: 'welcome',
+    name: '欢迎使用',
     icon: 'smile',
     component: './Welcome',
   },
