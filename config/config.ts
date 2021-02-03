@@ -45,4 +45,8 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
+  define: {
+    // 自定义的用户验证请求头名称
+    TOKEN_HEADER: 'token'
+  }
 });

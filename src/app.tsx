@@ -1,13 +1,13 @@
 import React from 'react';
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
-import { notification } from 'antd';
+import { notification, message } from 'antd';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import type { RequestOptionsInit, ResponseError } from 'umi-request';
-import { queryCurrent } from './services/user';
+import { getCurrentUserInfo } from './services/user';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -15,31 +15,24 @@ export const initialStateConfig = {
 };
 
 export async function getInitialState(): Promise<{
+  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
     try {
-      const currentUser = await queryCurrent();
-      return currentUser;
+      return await getCurrentUserInfo();
     } catch (error) {
+      sessionStorage.removeItem(TOKEN_HEADER);
+      localStorage.removeItem(TOKEN_HEADER);
       history.push('/user/login');
+      return undefined;
     }
-    return undefined;
   };
-  // 如果是登录页面，不执行
-  if (history.location.pathname !== '/user/login') {
-    const currentUser = await fetchUserInfo();
-    return {
-      fetchUserInfo,
-      currentUser,
-      settings: {},
-    };
-  }
   return {
     fetchUserInfo,
     settings: {},
+    currentUser: history.location.pathname === '/user/login' ? undefined : await fetchUserInfo(),
   };
 }
 
@@ -49,9 +42,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     disableContentMargin: false,
     footerRender: () => <Footer />,
     onPageChange: () => {
-      const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== '/user/login') {
+      if (!initialState?.currentUser && history.location.pathname !== '/user/login') {
         history.push('/user/login');
       }
     },
@@ -92,9 +84,9 @@ const errorHandler = (error: ResponseError) => {
       message: `请求错误 ${status}: ${url}`,
       description: errorText,
     });
-  }
-
-  if (!response) {
+  } else if (error.data.msg) {
+    message.error(error.data.msg)
+  } else {
     notification.error({
       description: '您的网络发生异常，无法连接服务器',
       message: '网络异常',
@@ -104,10 +96,10 @@ const errorHandler = (error: ResponseError) => {
 };
 
 const authHeaderInterceptor = (  url: string, options: RequestOptionsInit ) => {
-  const authHeader = {'token': localStorage.getItem('token')}
+  const token = sessionStorage.getItem(TOKEN_HEADER) || localStorage.getItem(TOKEN_HEADER)
   return {
     url: `${url}`,
-    options: { ...options , interceptors: true, headers: authHeader},
+    options: { ...options , interceptors: true, headers: token ? {[TOKEN_HEADER]: token} : {}},
   };    
 }
 
