@@ -8,7 +8,7 @@ export enum SmsType {
 }
 
 export async function sendCode(type: SmsType, phone?: string) {
-  return get('sms', { type, phone });
+  return get<void>('sms', { type, phone });
 }
 
 export async function checkCode(type: SmsType, code: string) {
