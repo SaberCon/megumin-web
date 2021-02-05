@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import ProForm, { ProFormCheckbox } from '@ant-design/pro-form';
 import { Link, history, useModel } from 'umi';
 import Footer from '@/components/Footer';
-import { login, SmsType } from '@/services/user';
+import { getCurrentUserInfo, login, SmsType } from '@/services/user';
 import styles from './index.less';
 import Captcha from '@/pages/Account/components/Captcha';
 import PhoneInput from '@/pages/Account/components/PhoneInput';
@@ -36,13 +36,6 @@ const Login: React.FC = () => {
   const [type, setType] = useState<'pwd' | 'sms'>('pwd');
   const { initialState, setInitialState } = useModel('@@initialState');
 
-  const fetchUserInfo = async () => {
-    const currentUser = await initialState?.fetchUserInfo?.();
-    if (currentUser) {
-      setInitialState({ ...initialState, currentUser });
-    }
-  };
-
   const handleSubmit = async (values: any) => {
     setSubmitting(true);
     try {
@@ -53,7 +46,8 @@ const Login: React.FC = () => {
         sessionStorage.setItem(TOKEN_HEADER, token);
       }
       message.success('登录成功');
-      await fetchUserInfo();
+      const currentUser = await getCurrentUserInfo();
+      setInitialState({ ...initialState, currentUser });
       goto();
     } catch (error) {
       setSubmitting(false);

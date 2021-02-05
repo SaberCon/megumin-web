@@ -16,10 +16,16 @@ export default [
     ],
   },
   {
-    name: '个人设置',
-    icon: 'smile',
-    path: '/account/settings',
-    component: './Account/Settings',
+    name: '用户',
+    path: '/account',
+    hideInMenu: true,
+    routes: [
+      {
+        path: '/account/settings',
+        name: '个人设置',
+        component: './Account/Settings',
+      },
+    ],
   },
   {
     name: '欢迎使用',

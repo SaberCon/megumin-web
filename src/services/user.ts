@@ -35,6 +35,6 @@ export async function updatePwd(pwd: string, code: string) {
   return putForm<void>('user/pwd', { pwd, code });
 }
 
-export async function update(user: API.User) {
+export async function updateUser(user: API.User) {
   return putForm<void>('user', user);
 }

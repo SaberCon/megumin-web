@@ -15,7 +15,6 @@ export const initialStateConfig = {
 };
 
 export async function getInitialState(): Promise<{
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
 }> {
@@ -30,7 +29,6 @@ export async function getInitialState(): Promise<{
     }
   };
   return {
-    fetchUserInfo,
     settings: {},
     currentUser: history.location.pathname === '/user/login' ? undefined : await fetchUserInfo(),
   };
