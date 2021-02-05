@@ -1,16 +1,14 @@
-import {
-  AlipayCircleOutlined,
-  LockOutlined,
-  MobileOutlined,
-  TaobaoCircleOutlined,
-} from '@ant-design/icons';
+import { AlipayCircleOutlined, TaobaoCircleOutlined } from '@ant-design/icons';
 import { Alert, Space, message, Tabs } from 'antd';
 import React, { useState } from 'react';
-import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
+import ProForm, { ProFormCheckbox } from '@ant-design/pro-form';
 import { Link, history, useModel } from 'umi';
 import Footer from '@/components/Footer';
-import { login, sendCode, SmsType } from '@/services/user';
+import { login, SmsType } from '@/services/user';
 import styles from './index.less';
+import Captcha from '@/pages/Account/components/Captcha';
+import PhoneInput from '@/pages/Account/components/PhoneInput';
+import PasswordInput from '@/pages/Account/components/PasswordInput';
 
 // 展示报错信息, 暂时不使用
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -99,65 +97,9 @@ const Login: React.FC = () => {
               <Tabs.TabPane key="pwd" tab="密码登录" />
               <Tabs.TabPane key="sms" tab="验证码登录" />
             </Tabs>
-
-            <ProFormText
-              name="phone"
-              fieldProps={{
-                size: 'large',
-                prefix: <MobileOutlined className={styles.prefixIcon} />,
-              }}
-              placeholder="手机号"
-              rules={[
-                {
-                  required: true,
-                  message: '请输入手机号',
-                },
-                {
-                  pattern: /^1\d{10}$/,
-                  message: '手机号不合法',
-                },
-              ]}
-            />
-
-            {type === 'pwd' && (
-              <ProFormText.Password
-                name="password"
-                fieldProps={{
-                  size: 'large',
-                  prefix: <LockOutlined className={styles.prefixIcon} />,
-                }}
-                placeholder="密码"
-                rules={[
-                  {
-                    required: true,
-                    message: '请输入密码',
-                  },
-                ]}
-              />
-            )}
-
-            {type === 'sms' && (
-              <ProFormCaptcha
-                name="code"
-                fieldProps={{
-                  size: 'large',
-                  prefix: <LockOutlined className={styles.prefixIcon} />,
-                }}
-                captchaProps={{
-                  size: 'large',
-                }}
-                placeholder="验证码"
-                captchaTextRender={(timing, count) => (timing ? `${count} 秒` : '获取验证码')}
-                rules={[
-                  {
-                    required: true,
-                    message: '请输入验证码',
-                  },
-                ]}
-                phoneName="phone"
-                onGetCaptcha={async (mobile) => sendCode(SmsType.LOGIN, mobile)}
-              />
-            )}
+            <PhoneInput />
+            {type === 'pwd' && <PasswordInput />}
+            {type === 'sms' && <Captcha smsType={SmsType.LOGIN} />}
             <div
               style={{
                 marginBottom: 24,

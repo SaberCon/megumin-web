@@ -6,13 +6,23 @@ declare namespace API {
     data: D;
   };
 
-  export type CurrentUser = {
+  export type Page<D = any> = {
+    list: D[];
+    total: number;
+  };
+
+  export type Gender = 'unknown' | 'boy' | 'girl';
+
+  export type User = {
     id: number;
     username: string;
     avatar: string;
-    phone?: string;
     about?: string;
-    gender?: 'unknown' | 'boy' | 'girl';
+    gender?: Gender;
+  };
+
+  export type CurrentUser = User & {
+    phone: string;
   };
 
   export type NoticeIconData = {

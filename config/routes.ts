@@ -1,4 +1,4 @@
-﻿export default [
+export default [
   {
     path: '/user',
     layout: false,
@@ -16,15 +16,21 @@
     ],
   },
   {
-    path: '/welcome',
+    name: '个人设置',
+    icon: 'smile',
+    path: '/account/settings',
+    component: './Account/Settings',
+  },
+  {
     name: '欢迎使用',
     icon: 'smile',
+    path: '/welcome',
     component: './Welcome',
   },
   {
-    path: '/admin',
     name: 'admin',
     icon: 'crown',
+    path: '/admin',
     access: 'canAdmin',
     component: './Admin',
     routes: [

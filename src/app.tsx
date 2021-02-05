@@ -85,7 +85,7 @@ const errorHandler = (error: ResponseError) => {
       description: errorText,
     });
   } else if (error.name === 'BizError') {
-    message.error(error.data.msg)
+    message.error(error.data.msg);
   } else {
     notification.error({
       description: '您的网络发生异常，无法连接服务器',
@@ -95,13 +95,13 @@ const errorHandler = (error: ResponseError) => {
   throw error;
 };
 
-const authHeaderInterceptor = (  url: string, options: RequestOptionsInit ) => {
-  const token = sessionStorage.getItem(TOKEN_HEADER) || localStorage.getItem(TOKEN_HEADER)
+const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
+  const token = sessionStorage.getItem(TOKEN_HEADER) || localStorage.getItem(TOKEN_HEADER);
   return {
     url: `${url}`,
-    options: { ...options , interceptors: true, headers: token ? {[TOKEN_HEADER]: token} : {}},
-  };    
-}
+    options: { ...options, interceptors: true, headers: token ? { [TOKEN_HEADER]: token } : {} },
+  };
+};
 
 export const request: RequestConfig = {
   errorHandler,

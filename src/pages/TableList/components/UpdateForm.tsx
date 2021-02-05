@@ -8,8 +8,9 @@ import {
   ProFormRadio,
   ProFormDateTimePicker,
 } from '@ant-design/pro-form';
-import { useIntl, FormattedMessage } from 'umi';
+import { useIntl } from 'umi';
 import type { TableListItem } from '../data.d';
+
 export type FormValueType = {
   target?: string;
   template?: string;
