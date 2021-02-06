@@ -11,7 +11,6 @@ import PhoneInput from '@/pages/Account/components/PhoneInput';
 import PasswordInput from '@/pages/Account/components/PasswordInput';
 
 // 展示报错信息, 暂时不使用
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const LoginMessage: React.FC<{
   content: string;
 }> = ({ content }) => (

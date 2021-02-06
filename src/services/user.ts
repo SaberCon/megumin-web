@@ -7,6 +7,10 @@ export enum SmsType {
   UPDATE_PWD = 4,
 }
 
+export async function getOssData() {
+  return get<API.OssData>('oss');
+}
+
 export async function sendCode(type: SmsType, phone?: string) {
   return get<void>('sms', { type, phone });
 }

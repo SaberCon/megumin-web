@@ -11,6 +11,14 @@ declare namespace API {
     total: number;
   };
 
+  export type OssData = {
+    accessId: string;
+    policy: string;
+    signature: string;
+    host: string;
+    expire: number;
+  };
+
   export type Gender = 'unknown' | 'boy' | 'girl';
 
   export type User = {
