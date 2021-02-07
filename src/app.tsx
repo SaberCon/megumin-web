@@ -15,16 +15,18 @@ export const initialStateConfig = {
 };
 
 export async function getInitialState(): Promise<{
-  settings?: Partial<LayoutSettings>;
+  settings: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
 }> {
   const fetchUserInfo = async () => {
+    if (!sessionStorage.getItem(TOKEN_HEADER) && !localStorage.getItem(TOKEN_HEADER)) {
+      return undefined;
+    }
     try {
       return await getCurrentUserInfo();
-    } catch (error) {
+    } catch (e) {
       sessionStorage.removeItem(TOKEN_HEADER);
       localStorage.removeItem(TOKEN_HEADER);
-      history.push('/user/login');
       return undefined;
     }
   };
@@ -40,10 +42,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     disableContentMargin: false,
     footerRender: () => <Footer />,
     onPageChange: () => {
-      // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && history.location.pathname !== '/user/login') {
-        history.push('/user/login');
-      }
+      // 暂时不需要用到此方法
     },
     menuHeaderRender: undefined,
     // 自定义 403 页面

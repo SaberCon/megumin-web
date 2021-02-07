@@ -2,13 +2,14 @@ import { AlipayCircleOutlined, TaobaoCircleOutlined } from '@ant-design/icons';
 import { Alert, Space, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCheckbox } from '@ant-design/pro-form';
-import { Link, history, useModel } from 'umi';
+import { Link, history } from 'umi';
 import Footer from '@/components/Footer';
-import { getCurrentUserInfo, login, SmsType } from '@/services/user';
+import { login, SmsType } from '@/services/user';
 import styles from './index.less';
 import Captcha from '@/pages/Account/components/Captcha';
 import PhoneInput from '@/pages/Account/components/PhoneInput';
 import PasswordInput from '@/pages/Account/components/PasswordInput';
+import useCurrentUser from '@/hooks/useCurrentUser';
 
 // 展示报错信息, 暂时不使用
 const LoginMessage: React.FC<{
@@ -33,7 +34,7 @@ const goto = () => {
 const Login: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [type, setType] = useState<'pwd' | 'sms'>('pwd');
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const { refreshCurrentUser } = useCurrentUser();
 
   const handleSubmit = async (values: any) => {
     setSubmitting(true);
@@ -45,8 +46,7 @@ const Login: React.FC = () => {
         sessionStorage.setItem(TOKEN_HEADER, token);
       }
       message.success('登录成功');
-      const currentUser = await getCurrentUserInfo();
-      setInitialState({ ...initialState, currentUser });
+      await refreshCurrentUser();
       goto();
     } catch (error) {
       setSubmitting(false);

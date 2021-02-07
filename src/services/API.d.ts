@@ -26,7 +26,7 @@ declare namespace API {
     username: string;
     avatar: string;
     about?: string;
-    gender?: Gender;
+    gender: Gender;
   };
 
   export type CurrentUser = User & {

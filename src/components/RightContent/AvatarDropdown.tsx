@@ -34,9 +34,9 @@ const AvatarDropdown: React.FC = () => {
       if (key === 'logout') {
         setInitialState({ ...initialState, currentUser: undefined });
         logout();
-        return;
+      } else {
+        history.push(`/account/${key}`);
       }
-      history.push(`/account/${key}`);
     },
     [initialState, setInitialState],
   );

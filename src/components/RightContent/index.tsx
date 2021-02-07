@@ -1,8 +1,8 @@
-import { Tag, Space, Menu } from 'antd';
+import { Tag, Space, Menu, Button } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
-import { useModel, SelectLang } from 'umi';
-import Avatar from './AvatarDropdown';
+import { useModel, SelectLang, Link } from 'umi';
+import AvatarDropdown from './AvatarDropdown';
 import HeaderDropdown from '../HeaderDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
@@ -17,11 +17,6 @@ const ENVTagColor = {
 
 const GlobalHeaderRight: React.FC = () => {
   const { initialState } = useModel('@@initialState');
-
-  if (!initialState || !initialState.settings) {
-    return null;
-  }
-
   const { navTheme, layout } = initialState.settings;
   let className = styles.right;
 
@@ -58,7 +53,13 @@ const GlobalHeaderRight: React.FC = () => {
           <QuestionCircleOutlined />
         </span>
       </HeaderDropdown>
-      <Avatar />
+      {initialState?.currentUser ? (
+        <AvatarDropdown />
+      ) : (
+        <Link to="/user/login">
+          <Button type="link">登录</Button>
+        </Link>
+      )}
       {REACT_APP_ENV && (
         <span>
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>

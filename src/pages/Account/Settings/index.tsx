@@ -3,13 +3,14 @@ import { useSize } from 'ahooks';
 import { Menu } from 'antd';
 import type { MenuMode } from 'antd/lib/menu';
 import React, { useState } from 'react';
+import { history, useParams } from 'umi';
 import BaseView from './components/BaseView';
 import BindingView from './components/BindingView';
 import NotificationView from './components/NotificationView';
 import SecurityView from './components/SecurityView';
 import styles from './style.less';
 
-type StateKeys = 'base' | 'security' | 'binding' | 'notification';
+type StateKey = 'base' | 'security' | 'binding' | 'notification';
 
 const menuMap = {
   base: '基本设置',
@@ -26,7 +27,10 @@ const viewMap = {
 };
 
 export default () => {
-  const [selectedKey, setSelectedKey] = useState<StateKeys>('base');
+  let { type } = useParams<{ type: StateKey }>();
+  if (!menuMap[type]) {
+    type = 'base';
+  }
   const size = useSize(document.body);
   let mode: MenuMode = 'inline';
   if (size.width && size.width < 768 && size.width > 464) {
@@ -39,8 +43,8 @@ export default () => {
         <div className={styles.leftMenu}>
           <Menu
             mode={mode}
-            selectedKeys={[selectedKey]}
-            onClick={({ key }) => setSelectedKey(key as StateKeys)}
+            selectedKeys={[type]}
+            onClick={({ key }) => history.push(`/account/settings/${key}`)}
           >
             {Object.keys(menuMap).map((item) => (
               <Menu.Item key={item}>{menuMap[item]}</Menu.Item>
@@ -48,8 +52,8 @@ export default () => {
           </Menu>
         </div>
         <div className={styles.right}>
-          <div className={styles.title}>{menuMap[selectedKey]}</div>
-          {viewMap[selectedKey]}
+          <div className={styles.title}>{menuMap[type]}</div>
+          {viewMap[type]}
         </div>
       </div>
     </GridContent>

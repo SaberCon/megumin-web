@@ -1,11 +1,11 @@
-import { getCurrentUserInfo, getOssData, updateUser } from '@/services/user';
+import useCurrentUser from '@/hooks/useCurrentUser';
+import { getOssData, updateUser } from '@/services/user';
 import { UploadOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
 import { Button, Form, Input, message, Radio, Upload } from 'antd';
 import type { UploadChangeParam } from 'antd/lib/upload';
 import type { RcFile, UploadFile } from 'antd/lib/upload/interface';
 import React, { useState } from 'react';
-import { useModel } from 'umi';
 import styles from './BaseView.less';
 
 const AvatarView: React.FC<{ avatar: string; setAvatar: (avatar: string) => void }> = ({
@@ -19,9 +19,12 @@ const AvatarView: React.FC<{ avatar: string; setAvatar: (avatar: string) => void
       await run();
     }
     const now = new Date();
-    file.url = `img/${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}/${Date.now()}-${
-      file.name
-    }`;
+    Object.defineProperty(file, 'url', {
+      value: `img/${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}/${Date.now()}-${
+        file.name
+      }`,
+      enumerable: true,
+    });
     return file;
   };
 
@@ -66,14 +69,13 @@ const AvatarView: React.FC<{ avatar: string; setAvatar: (avatar: string) => void
 };
 
 export default () => {
-  const { initialState, setInitialState } = useModel('@@initialState');
-  const currentUser = initialState?.currentUser;
-  const [avatar, setAvatar] = useState(currentUser?.avatar);
+  const { currentUser, refreshCurrentUser } = useCurrentUser(true);
+  const [avatar, setAvatar] = useState(currentUser.avatar);
   const { loading, run } = useRequest(updateUser, {
     manual: true,
-    onSuccess: async () => {
+    onSuccess: () => {
       message.success('更新成功');
-      setInitialState({ ...initialState, currentUser: await getCurrentUserInfo() });
+      refreshCurrentUser();
     },
   });
 
@@ -115,7 +117,7 @@ export default () => {
         </Form>
       </div>
       <div className={styles.right}>
-        <AvatarView avatar={avatar ?? ''} setAvatar={setAvatar} />
+        <AvatarView avatar={avatar} setAvatar={setAvatar} />
       </div>
     </div>
   );

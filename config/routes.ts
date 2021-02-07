@@ -21,7 +21,7 @@ export default [
     hideInMenu: true,
     routes: [
       {
-        path: '/account/settings',
+        path: '/account/settings/:type?/:subtype?',
         name: '个人设置',
         component: './Account/Settings',
       },
