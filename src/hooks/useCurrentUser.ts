@@ -16,7 +16,11 @@ export default (redirect: boolean = false): { currentUser: API.CurrentUser, refr
     const { initialState, setInitialState } = useModel('@@initialState');
 
     const refreshCurrentUser = async () => {
-        setInitialState({ ...initialState as NonNullable<typeof initialState>, currentUser: await getCurrentUserInfo() });
+        try {
+            setInitialState({ ...initialState as NonNullable<typeof initialState>, currentUser: await getCurrentUserInfo() });
+        } catch (error) {
+            setInitialState({ ...initialState as NonNullable<typeof initialState>, currentUser: undefined });
+        }
     }
 
     if (redirect && !initialState?.currentUser) {

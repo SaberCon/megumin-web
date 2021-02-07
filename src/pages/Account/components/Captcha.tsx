@@ -5,12 +5,7 @@ import type { ProFormCaptchaProps } from '@ant-design/pro-form';
 import { ProFormCaptcha } from '@ant-design/pro-form';
 import React from 'react';
 
-interface CaptchaProps extends ProFormCaptchaProps {
-  onGetCaptcha?: (mobile: string) => Promise<void>;
-  smsType: SmsType;
-}
-
-export default ({ smsType, ...restProps }: CaptchaProps) => (
+export default ({ smsType, ...restProps }: Partial<ProFormCaptchaProps> & { smsType: SmsType }) => (
   <ProFormCaptcha
     name="code"
     phoneName="phone"

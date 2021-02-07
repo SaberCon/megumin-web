@@ -35,8 +35,8 @@ export async function updatePhone(phone: string, unbindCode: string, bindCode: s
   return putForm<void>('user/phone', { phone, unbindCode, bindCode });
 }
 
-export async function updatePwd(pwd: string, code: string) {
-  return putForm<void>('user/pwd', { pwd, code });
+export async function updatePwd(password: string, code: string) {
+  return putForm<void>('user/pwd', { password, code });
 }
 
 export async function updateUser(user: API.User) {

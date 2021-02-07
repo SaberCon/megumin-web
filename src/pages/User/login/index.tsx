@@ -86,7 +86,7 @@ const Login: React.FC = () => {
             }}
             onFinish={handleSubmit}
           >
-            <Tabs activeKey={type} onChange={setType}>
+            <Tabs activeKey={type} onChange={setType as (activeKey: string) => void}>
               <Tabs.TabPane key="pwd" tab="密码登录" />
               <Tabs.TabPane key="sms" tab="验证码登录" />
             </Tabs>
