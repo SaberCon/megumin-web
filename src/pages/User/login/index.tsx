@@ -9,7 +9,7 @@ import styles from './index.less';
 import Captcha from '@/pages/Account/components/Captcha';
 import PhoneInput from '@/pages/Account/components/PhoneInput';
 import PasswordInput from '@/pages/Account/components/PasswordInput';
-import useCurrentUser from '@/hooks/useCurrentUser';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 // 展示报错信息, 暂时不使用
 const LoginMessage: React.FC<{

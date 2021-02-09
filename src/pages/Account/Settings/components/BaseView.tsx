@@ -1,4 +1,4 @@
-import useCurrentUser from '@/hooks/useCurrentUser';
+import { useCurrentUserOrGoToLogin } from '@/hooks/useCurrentUser';
 import { getOssData, updateUser } from '@/services/user';
 import { UploadOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
@@ -69,7 +69,7 @@ const AvatarView: React.FC<{ avatar: string; setAvatar: (avatar: string) => void
 };
 
 export default () => {
-  const { currentUser, refreshCurrentUser } = useCurrentUser(true);
+  const { currentUser, refreshCurrentUser } = useCurrentUserOrGoToLogin();
   const [avatar, setAvatar] = useState(currentUser.avatar);
   const { loading, run } = useRequest(updateUser, {
     manual: true,

@@ -1,4 +1,4 @@
-import useCurrentUser from '@/hooks/useCurrentUser';
+import { useCurrentUserOrGoToLogin } from '@/hooks/useCurrentUser';
 import { List } from 'antd';
 import React from 'react';
 import { history, useParams } from 'umi';
@@ -18,7 +18,7 @@ const getModifyAction = (type: StateKey) => {
 
 export default () => {
   const { subtype } = useParams<{ subtype: StateKey }>();
-  const { currentUser } = useCurrentUser(true);
+  const { currentUser } = useCurrentUserOrGoToLogin();
   if (!viewMap[subtype]) {
     const dataSource = [
       {

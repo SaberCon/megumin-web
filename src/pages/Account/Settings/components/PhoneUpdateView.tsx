@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { StepsForm } from '@ant-design/pro-form';
 import { message, Result } from 'antd';
-import useCurrentUser from '@/hooks/useCurrentUser';
+import { useCurrentUserOrGoToLogin } from '@/hooks/useCurrentUser';
 import { SmsType, updatePhone, checkCode } from '@/services/user';
 import PhoneInput from '../../components/PhoneInput';
 import Captcha from '../../components/Captcha';
 
 export default () => {
-  const { currentUser, refreshCurrentUser } = useCurrentUser(true);
+  const { currentUser, refreshCurrentUser } = useCurrentUserOrGoToLogin();
   const [unbindCode, setUnbindCode] = useState('');
   return (
     <div style={{ paddingTop: '12px' }}>

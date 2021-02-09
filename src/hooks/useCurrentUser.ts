@@ -9,10 +9,7 @@ const fakeUser: API.CurrentUser = {
     phone: ''
 }
 
-/**
- * @param redirect 用户不存在时是否重定向到登录页
- */
-export default (redirect: boolean = false): { currentUser: API.CurrentUser, refreshCurrentUser: () => Promise<any> } => {
+export const useCurrentUser = () => {
     const { initialState, setInitialState } = useModel('@@initialState');
 
     const refreshCurrentUser = async () => {
@@ -23,7 +20,12 @@ export default (redirect: boolean = false): { currentUser: API.CurrentUser, refr
         }
     }
 
-    if (redirect && !initialState?.currentUser) {
+    return { currentUser: initialState?.currentUser, refreshCurrentUser };
+}
+
+export const useCurrentUserOrGoToLogin = (): { currentUser: API.CurrentUser, refreshCurrentUser: () => Promise<any> } => {
+    const { currentUser, refreshCurrentUser } = useCurrentUser();
+    if (!currentUser) {
         if (history.location.pathname !== '/user/login') {
             history.push({
                 pathname: '/user/login',
@@ -35,6 +37,5 @@ export default (redirect: boolean = false): { currentUser: API.CurrentUser, refr
         // 页面会重定向到登录页, 先返回空用户信息防止后续方法报错
         return { currentUser: fakeUser, refreshCurrentUser };
     }
-    // todo 当 redirect 为 true 时 currentUser 不可能为空, 此处返回类型有待优化
-    return { currentUser: initialState?.currentUser as API.CurrentUser, refreshCurrentUser };
+    return { currentUser, refreshCurrentUser };
 }

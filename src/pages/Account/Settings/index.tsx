@@ -2,7 +2,7 @@ import { GridContent } from '@ant-design/pro-layout';
 import { useSize } from 'ahooks';
 import { Menu } from 'antd';
 import type { MenuMode } from 'antd/lib/menu';
-import React, { useState } from 'react';
+import React from 'react';
 import { history, useParams } from 'umi';
 import BaseView from './components/BaseView';
 import BindingView from './components/BindingView';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Popover, Progress, message } from 'antd';
-import useCurrentUser from '@/hooks/useCurrentUser';
+import { useCurrentUserOrGoToLogin } from '@/hooks/useCurrentUser';
 import ProForm from '@ant-design/pro-form';
 import { SmsType, updatePwd } from '@/services/user';
 import PhoneInput from '../../components/PhoneInput';
@@ -23,7 +23,7 @@ const passwordProgressMap: Record<PasswordStatus, 'normal' | 'exception' | 'acti
 };
 
 export default () => {
-  const { currentUser, refreshCurrentUser } = useCurrentUser(true);
+  const { currentUser, refreshCurrentUser } = useCurrentUserOrGoToLogin();
   const [passwordLength, setPasswordLength] = useState(0);
   const [form] = ProForm.useForm();
   const passwordStatus: PasswordStatus =
