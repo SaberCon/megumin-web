@@ -14,9 +14,9 @@ export const useCurrentUser = () => {
 
     const refreshCurrentUser = async () => {
         try {
-            setInitialState({ ...initialState as NonNullable<typeof initialState>, currentUser: await getCurrentUserInfo() });
+            setInitialState({ ...initialState!, currentUser: await getCurrentUserInfo() });
         } catch (error) {
-            setInitialState({ ...initialState as NonNullable<typeof initialState>, currentUser: undefined });
+            setInitialState({ ...initialState!, currentUser: undefined });
         }
     }
 
