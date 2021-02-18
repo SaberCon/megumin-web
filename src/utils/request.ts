@@ -32,3 +32,13 @@ export async function putJson<D>(url: string, data: any) {
 export async function putForm<D>(url: string, data: any) {
   return sendRequest<D>(url, { method: 'PUT', requestType: 'form', data });
 }
+
+/**
+ * 根据当前数据计算下一页的页码
+ * 
+ * @param length 当前数据长度
+ * @param size 页幅
+ */
+export function calcNextPage(length?: number, size: number=10) {
+  return length ? Math.floor(length / size) : 0;
+}
